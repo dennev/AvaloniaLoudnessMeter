@@ -2,7 +2,7 @@
 
 public record AudioChunkData(
     double Loudness,
-    double ShortTermLUFS, 
+    double ShortTermLUFS,
     double IntegratedLUFS,
     double LoudnessRange,
     double RealtimeDynamics,
@@ -10,4 +10,4 @@ public record AudioChunkData(
     double MomentaryMaxLUFS,
     double ShortTermMaxLUFS,
     double TruePeakMax
-    );
+);

@@ -43,8 +43,8 @@ public partial class MainView : UserControl
     /// </summary>
     private void UpdateSizes()
     {
-        mViewModel.VolumeContainerHeight = mVolumeContainer.Bounds.Height;
-        mViewModel.VolumeBarHeight = mVolumeBar.Bounds.Height;
+        MViewModel.VolumeContainerHeight = mVolumeContainer.Bounds.Height;
+        MViewModel.VolumeBarHeight = mVolumeBar.Bounds.Height;
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public partial class MainView : UserControl
     /// <param name="routedEventArgs"></param>
     protected override async void OnLoaded(RoutedEventArgs routedEventArgs)
     {
-        await mViewModel.LoadCommand();
+        await MViewModel.LoadCommand();
 
         base.OnLoaded(routedEventArgs);
     }
@@ -80,7 +80,7 @@ public partial class MainView : UserControl
 
     private void InputElement_OnPointerPressed(object sender, PointerPressedEventArgs e)
     {
-        mViewModel.ChannelConfigurationButtonPressed();
+        MViewModel.ChannelConfigurationButtonPressed();
     }
 
     #region Private Members
@@ -88,7 +88,7 @@ public partial class MainView : UserControl
     /// <summary>
     ///     The main view of this view
     /// </summary>
-    private MainViewModel mViewModel => (MainViewModel)DataContext;
+    private MainViewModel MViewModel => (MainViewModel)DataContext;
 
     private readonly Control mChannelConfigPopup;
     private readonly Control mChannelConfigButton;

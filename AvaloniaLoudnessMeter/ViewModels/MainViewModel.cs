@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -19,12 +20,12 @@ namespace AvaloniaLoudnessMeter.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private void initialize()
+    private void Initialize()
     {
         MainChartValues.AddRange(Enumerable.Range(0, 200).Select(f => new ObservableValue(0)));
-        
-        Series = new ISeries[]
-        {
+
+        Series =
+        [
             new LineSeries<ObservableValue>
             {
                 Values = MainChartValues,
@@ -33,7 +34,7 @@ public class MainViewModel : ViewModelBase
                 Fill = new SolidColorPaint(new SKColor(63, 77, 99)),
                 Stroke = new SolidColorPaint(new SKColor(120, 152, 203)) { StrokeThickness = 3 }
             }
-        };
+        ];
     }
 
     /// <summary>
@@ -46,10 +47,7 @@ public class MainViewModel : ViewModelBase
         _mAudioCaptureService.InitCapture(deviceId);
 
         // Listen out for chunks of information
-        _mAudioCaptureService.AudioChunkAvailable += audioChunkData =>
-        {
-            ProcessAudioChunk(audioChunkData);
-        };
+        _mAudioCaptureService.AudioChunkAvailable += ProcessAudioChunk;
 
         // Start capturing
         _mAudioCaptureService.Start();
@@ -71,11 +69,11 @@ public class MainViewModel : ViewModelBase
             MomentaryMaxLoudness = $"{Math.Max(-60, audioChunkData.MomentaryMaxLUFS):0.0} LUFS";
             ShortTermMaxLoudness = $"{Math.Max(-60, audioChunkData.ShortTermMaxLUFS):0.0} LUFS";
             TruePeakMax = $"{Math.Max(-60, audioChunkData.TruePeakMax):0.0} dB";
-            
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 MainChartValues.RemoveAt(0);
-                MainChartValues.Add(new (Math.Max(0,60+audioChunkData.ShortTermLUFS)));
+                MainChartValues.Add(new ObservableValue(Math.Max(0, 60 + audioChunkData.ShortTermLUFS)));
             });
         }
 
@@ -228,23 +226,23 @@ public class MainViewModel : ViewModelBase
 
     public string ChannelConfigurationButtonText => _selectedChannelConfiguration?.ShortText ?? "Select a channel";
 
-    public ObservableCollection<ObservableValue> MainChartValues = new ObservableCollection<ObservableValue>();
-    
+    public readonly ObservableCollection<ObservableValue> MainChartValues = [];
+
     public ISeries[] Series { get; set; }
 
-    public List<Axis> YAxis { get; set; } = new()
-    {
-        new Axis
+    public List<Axis> YAxis { get; set; } =
+    [
+        new()
         {
             MinStep = 10,
             ForceStepToMin = true,
             MinLimit = 0,
             MaxLimit = 60,
-            Labeler = val => (Math.Min(60, Math.Max(0, val)) - 60).ToString(),
+            Labeler = val => (Math.Min(60, Math.Max(0, val)) - 60).ToString(CultureInfo.InvariantCulture),
             IsVisible = false
             // IsInverted = true
         }
-    };
+    ];
 
     #endregion
 
@@ -293,7 +291,7 @@ public class MainViewModel : ViewModelBase
         ChannelConfigurationItemPressedCommand =
             ReactiveCommand.Create<ChannelConfigurationItem>(ChannelConfigurationItemPressed);
 
-        initialize();
+        Initialize();
     }
 
     /// <summary>
@@ -306,7 +304,7 @@ public class MainViewModel : ViewModelBase
         ChannelConfigurationItemPressedCommand =
             ReactiveCommand.Create<ChannelConfigurationItem>(ChannelConfigurationItemPressed);
 
-        initialize();
+        Initialize();
     }
 
     #endregion

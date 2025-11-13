@@ -22,7 +22,6 @@ public class BassAudioCaptureService : IDisposable, IAudioCaptureService
     /// <param name="frequency"></param>
     public BassAudioCaptureService()
     {
-
         // Initialize and start
         Bass.Init();
     }
@@ -52,8 +51,8 @@ public class BassAudioCaptureService : IDisposable, IAudioCaptureService
         mHandle = Bass.RecordStart(frequency, 2, BassFlags.RecordPause, 20, AudioChunkCaptured);
 
         // Output all devices, then select one
-        // foreach (var device in RecordingDevice.Enumerate()) Console.WriteLine($"{device?.Index}: {device?.Name}");
-        //
+        foreach (var device in RecordingDevice.Enumerate()) Console.WriteLine($"{device.Index}: {device.Name}");
+
         // var outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MBass");
         // Directory.CreateDirectory(outputPath);
         //
@@ -174,7 +173,7 @@ public class BassAudioCaptureService : IDisposable, IAudioCaptureService
 
         // Calculate the average
         var averageLufs = mLufs.Average();
-        
+
         var averageLongLufs = mLufsLonger.Average();
 
         // Fire off this chunk of information to listeners

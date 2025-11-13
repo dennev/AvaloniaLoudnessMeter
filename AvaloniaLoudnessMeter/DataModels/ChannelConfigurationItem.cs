@@ -3,16 +3,9 @@
 /// <summary>
 ///     Information about a channel configuration
 /// </summary>
-public class ChannelConfigurationItem
+public class ChannelConfigurationItem(string group, string text, string shortText)
 {
-    public ChannelConfigurationItem(string group, string text, string shortText)
-    {
-        Group = group;
-        Text = text;
-        ShortText = shortText;
-    }
-
-    public string Group { get; set; }
-    public string Text { get; set; }
-    public string ShortText { get; set; }
+    public string Group { get; set; } = group;
+    public string Text { get; set; } = text;
+    public string ShortText { get; set; } = shortText;
 }

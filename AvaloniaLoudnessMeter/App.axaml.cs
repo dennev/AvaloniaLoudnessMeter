@@ -20,16 +20,21 @@ public class App : Application
         var audioInterface = new BassAudioCaptureService();
         var mainViewModel = new MainViewModel(audioInterface);
 
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = mainViewModel
-            };
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = mainViewModel
-            };
+        switch (ApplicationLifetime)
+        {
+            case IClassicDesktopStyleApplicationLifetime desktop:
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = mainViewModel
+                };
+                break;
+            case ISingleViewApplicationLifetime singleViewPlatform:
+                singleViewPlatform.MainView = new MainView
+                {
+                    DataContext = mainViewModel
+                };
+                break;
+        }
 
         base.OnFrameworkInitializationCompleted();
     }
