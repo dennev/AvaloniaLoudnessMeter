@@ -273,7 +273,7 @@ public class MainViewModel : ViewModelBase
 
         ChannelConfigurations = new ObservableCollection<ChannelConfigurationItem>(channelConfigurations);
 
-        StartCapture(3);
+        StartCapture(0);
     }
 
     #endregion
